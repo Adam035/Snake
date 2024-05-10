@@ -1,6 +1,7 @@
 package com.lipian.snake.body;
 
 import com.lipian.snake.direction.Direction;
+import com.lipian.snake.screen.Frame;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,14 +38,25 @@ public class Snake {
         return newNode;
     }
 
-    public boolean checkCollision(int x, int y) {
-        Node current = head;
+    public boolean checkPosition(int x, int y) {
+        return head.checkPosition(x, y);
+    }
+
+    public boolean isCollision() {
+        Node current = head.getNext();
+        boolean taken = false;
         while (current != null) {
-            if (current.getX() == x && current.getY() == y)
-                return true;
+            taken = current.checkPosition(head.getX(), head.getY());
+            if (taken) break;
             current = current.getNext();
         }
-        return false;
+        return taken || isOutOfBounds();
+    }
+
+    private boolean isOutOfBounds() {
+        System.out.println(head.getX());
+        return head.getX() < 0 || head.getX() >= Frame.WIDTH / Node.SIZE
+                || head.getY() < 0 || head.getY() >= Frame.HEIGHT / Node.SIZE;
     }
 
     public void paint(Graphics g) {

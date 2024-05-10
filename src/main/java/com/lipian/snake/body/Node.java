@@ -27,6 +27,12 @@ public class Node {
         return new Node(oldX, oldY);
     }
 
+    public boolean checkPosition(int x, int y) {
+        if (this.x == x && this.y == y) return true;
+        else if (next != null) next.checkPosition(x, y);
+        return false;
+    }
+
     protected void paint(Graphics g) {
         g.setColor(Color.GREEN);
         g.fillRect(x * SIZE, y * SIZE, SIZE, SIZE);

@@ -14,8 +14,10 @@ public class Panel extends JPanel implements ActionListener {
     private static final int DELAY = 150;
     private final Snake snake;
     private final Apple apple;
+    private boolean isRunning;
 
     public Panel() {
+        isRunning = true;
         setBackground(Color.darkGray);
         setFocusable(true);
         snake = new Snake(new Node(4, 12));
@@ -24,8 +26,17 @@ public class Panel extends JPanel implements ActionListener {
         start();
     }
 
-    private boolean checkCollision() {
-        return snake.checkCollision(apple.getX(), apple.getY());
+    private void checkCollision() {
+        Node newNode = snake.move();
+        boolean isAppleEaten = snake.checkPosition(apple.getX(), apple.getY());
+        if (isAppleEaten) {
+            apple.move();
+            snake.addNode(newNode);
+        }
+    }
+
+    private void isCollision() {
+        if (snake.isCollision()) isRunning = false;
     }
 
     private void start() {
@@ -52,10 +63,9 @@ public class Panel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Node newNode = snake.move();
-        if (checkCollision()) {
-            apple.move();
-            snake.addNode(newNode);
+        if (isRunning) {
+            checkCollision();
+            isCollision();
         }
         repaint();
     }
