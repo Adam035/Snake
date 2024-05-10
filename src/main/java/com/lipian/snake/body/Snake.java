@@ -54,7 +54,6 @@ public class Snake {
     }
 
     private boolean isOutOfBounds() {
-        System.out.println(head.getX());
         return head.getX() < 0 || head.getX() >= Frame.WIDTH / Node.SIZE
                 || head.getY() < 0 || head.getY() >= Frame.HEIGHT / Node.SIZE;
     }
